@@ -1,0 +1,6 @@
+.DS_Store
+.idea/
+mp3s/
+~.drawio.bkp
+__pycache__/
+*.pyc
