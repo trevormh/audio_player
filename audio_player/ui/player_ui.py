@@ -1,19 +1,24 @@
 from audio_player.audio_player.audio_player import AudioPlayer
+from audio_player.audio_player.audio_player_controller import AudioPlayerController
 from audio_player.ui.abstract_mediator import AbstractMediator
 from audio_player.ui.components.abstract_component import AbstractComponent
 from audio_player.ui.components.button import Button
 import tkinter as tk
 
+from audio_player.ui.components.label import Label
+
 
 class PlayerUI(AbstractMediator):
 
     def __init__(self):
-        self.player = AudioPlayer()
+        # self.player = AudioPlayer()
+        self.player = AudioPlayerController()
         self.play_button = Button(self, "play")
         self.stop_button = Button(self, "stop")
         self.prev_button = Button(self, "prev")
         self.next_button = Button(self, "next")
-        self.now_playing_label = Button(self, "playing_label")
+        self.now_playing_label = Label(self, "playing_label")
+        self.now_playing_text = ''
 
     def build_gui(self):
         window = tk.Tk()
@@ -41,20 +46,25 @@ class PlayerUI(AbstractMediator):
             text="Next",
             command=self.next_button.click
         )
+        self.now_playing_label.set_widget(
+            master=main_frame,
+            text=self.player.get_filename_playing()
+        )
 
         self.play_button.tk_widget.grid(row=0, column=0)
         self.stop_button.tk_widget.grid(row=0, column=1)
         self.prev_button.tk_widget.grid(row=0, column=2)
         self.next_button.tk_widget.grid(row=0, column=3)
+        self.now_playing_label.tk_widget.grid(row=1, columnspan=4, sticky="w")
 
         main_frame.grid(row=0, column=0)
         window.mainloop()
 
     def notify(self, sender: AbstractComponent, name: str) -> None:
-        print(name)
         if name == "play":
-            self.player.start_playback()
+            self.player.play()
+            self.now_playing_label.set_label(self.player.get_filename_playing())
 
         if name == "stop":
-            self.player.stop_playback()
+            self.player.stop()
 

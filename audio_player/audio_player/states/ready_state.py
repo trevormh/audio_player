@@ -9,7 +9,7 @@ class ReadyState(AbstractState):
 
     def play(self):
         self.player.change_state(PlayingState(self.player))
-        self.player.start_playback()
+        self.player.handle_play()
         # return action
 
     def pause(self):

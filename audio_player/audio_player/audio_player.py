@@ -15,7 +15,11 @@ class AudioPlayer:
     def __init__(self):
         self.state: Union[AbstractState, None] = ReadyState(self)
         self.playing: bool = False
+        self.filename_playing = ''
         self.audio = None
+
+    def get_filename_playing(self):
+        return self.filename_playing
 
     def change_state(self, state: AbstractState) -> None:
         self.state = state
@@ -32,11 +36,11 @@ class AudioPlayer:
     def next_track(self) -> str:
         return "Next track playing"
 
-    def start_playback(self):
-        self.state.play()
-
-    def stop_playback(self):
-        self.state.stop()
+    # def start_playback(self):
+    #     self.state.play()
+    #
+    # def stop_playback(self):
+    #     self.state.stop()
 
     def previous_track(self) -> str:
         return "Previous track"
@@ -48,16 +52,16 @@ class AudioPlayer:
         self.playing = False
         self.audio.stop()
 
-    def play(self):
+    def handle_play(self):
+        t = threading.Thread(target=self.__start_playback, daemon=True)
+        t.start()
+
+    def __start_playback(self):
         base_path = os.path.dirname(__file__)
-        filepath = os.path.abspath(os.path.join(base_path, "..", "..", "mp3s/affiance_take_on_me.mp3"))
+        self.filename_playing = "affiance_take_on_me.mp3"
+        filepath = os.path.abspath(os.path.join(base_path, "..", "..", f"mp3s/{self.filename_playing}"))
+        print(filepath)
         self.audio = vlc.MediaPlayer(filepath)
         self.audio.play()
         while self.playing:
             pass
-
-    def handle_play(self):
-        t = threading.Thread(target=self.play, daemon=True)
-        t.start()
-
-
