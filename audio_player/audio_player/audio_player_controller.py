@@ -8,13 +8,21 @@ class AudioPlayerController:
 
     def __init__(self):
         self.player = AudioPlayer()
-        self.state = self.player.get_state()
 
     def play(self):
-        self.state.play()
+        self.player.get_state().play()
+
+    def pause(self):
+        self.player.get_state().pause()
 
     def stop(self):
-        self.state.stop()
+        self.player.get_state().stop()
+
+    def next(self):
+        self.player.get_state().next()
+
+    def previous(self):
+        self.player.get_state().previous()
 
     def get_filename_playing(self):
         return self.player.get_filename_playing()

@@ -7,16 +7,18 @@ class PlayingState(AbstractState):
         super().__init__(player)
 
     def play(self):
-        self.player.handle_play()
+        pass
 
     def pause(self):
-        pass
+        self.player.handle_pause()
+        from audio_player.audio_player.states.paused_state import PausedState
+        self.player.change_state(PausedState(self.player))
 
     def stop(self):
         self.player.handle_stop()
 
     def next(self):
-        pass
+        self.player.handle_next()
 
     def previous(self):
-        pass
+        self.player.handle_previous()
