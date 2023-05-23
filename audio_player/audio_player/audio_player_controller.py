@@ -4,8 +4,6 @@ from audio_player.audio_player.audio_player import AudioPlayer
 # This class acts as a facade for the audioplayer
 class AudioPlayerController:
 
-    playing_thread = None
-
     def __init__(self):
         self.player = AudioPlayer()
 

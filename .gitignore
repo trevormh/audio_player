@@ -1,6 +1,8 @@
 .DS_Store
 .idea/
-mp3s/
+*.mp3
 ~.drawio.bkp
 __pycache__/
 *.pyc
+venv
+~.drawio.bkp

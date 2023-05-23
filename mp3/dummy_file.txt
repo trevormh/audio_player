@@ -1,0 +1,1 @@
+This file exists as a placeholder so that the mp3 directory will be tracked by git without any other contents

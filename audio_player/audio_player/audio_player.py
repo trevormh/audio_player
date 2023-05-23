@@ -1,24 +1,19 @@
-import os
-from os import path, listdir
+from os import path
 from typing import Union
-# https://www.olivieraubert.net/vlc/python-ctypes/doc/
 import vlc
 from audio_player.audio_player.states.abstract_state import AbstractState
 from audio_player.audio_player.states.ready_state import ReadyState
 import threading
-from time import sleep
 import glob
 
 
 class AudioPlayer:
 
-    playing_thread = None
-
     def __init__(self):
         self.state: Union[AbstractState, None] = ReadyState(self)
         self.playing: bool = False
         self.filename_playing = ''
-        self.audio = None
+        self.vlc_media = None
         self.pause = False
         self.files_dir = ''
         self.__set_files_dir()
@@ -28,7 +23,7 @@ class AudioPlayer:
 
     def __set_files_dir(self):
         base_path = path.dirname(__file__)
-        self.files_dir = path.abspath(path.join(base_path, "..", "..", f"mp3s"))
+        self.files_dir = path.abspath(path.join(base_path, "..", "..", f"mp3"))
 
     def __set_file_names(self):
         self.files = []
@@ -57,35 +52,33 @@ class AudioPlayer:
             self.currently_playing = 0
         else:
             self.currently_playing += 1
-        self.__start_playback()
+        self.handle_play()
 
     def handle_previous(self):
         if self.currently_playing - 1 < 0:
             self.currently_playing = len(self.files) - 1
         else:
             self.currently_playing -= 1
-        self.__start_playback()
+        self.handle_play()
 
     def set_current_track_after_stop(self) -> str:
         return "Starting from first track"
 
     def handle_stop(self):
-        self.audio.stop()
+        self.vlc_media.stop()
         self.currently_playing = 0
 
     def handle_pause(self):
-        self.audio.pause()
+        self.vlc_media.pause()
 
     def handle_play(self):
         t = threading.Thread(target=self.__start_playback, daemon=True)
         t.start()
 
     def __start_playback(self):
-        if self.audio is not None:
-            self.audio.stop()
-        self.audio = vlc.MediaPlayer(self.files[self.currently_playing])
-        self.audio.play()
-        while self.audio.is_playing() == 1:
+        if self.vlc_media is not None:
+            self.vlc_media.stop()
+        self.vlc_media = vlc.MediaPlayer(self.files[self.currently_playing])
+        self.vlc_media.play()
+        while self.vlc_media.is_playing() == 1:
             pass
-            # if self.pause is True:
-            #     self.audio.pause()

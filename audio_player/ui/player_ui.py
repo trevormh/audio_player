@@ -1,4 +1,3 @@
-from audio_player.audio_player.audio_player import AudioPlayer
 from audio_player.audio_player.audio_player_controller import AudioPlayerController
 from audio_player.ui.abstract_mediator import AbstractMediator
 from audio_player.ui.components.abstract_component import AbstractComponent
@@ -11,7 +10,6 @@ from audio_player.ui.components.label import Label
 class PlayerUI(AbstractMediator):
 
     def __init__(self):
-        # self.player = AudioPlayer()
         self.player = AudioPlayerController()
         self.play_button = Button(self, "play")
         self.pause_button = Button(self, "pause")
