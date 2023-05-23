@@ -9,4 +9,4 @@ Note: This uses a [VLC](https://www.videolan.org/vlc/) based library which requi
 
 2. Create virtual environment with `python3 -m venv venv`, activate it (on Mac/Linux) with `source venv/bin/activate` and install dependencies with `pip install`
 
-3. Start the program the root directory with `python3 demo.py`
+3. Start the program from the root directory with `python3 demo.py`
